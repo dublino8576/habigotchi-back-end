@@ -1,7 +1,7 @@
-const express = require('express')
+import express from 'express'
 const apiRouter = express.Router()
-const {controllerFunction} = require('../controllers/habitController')
-// apiRouter.get('/' , (req, res) => {res.status(200).send("endpoint")})
+
+import {controllerFunction} from '../controllers/habitController'
 apiRouter.get('/' , controllerFunction)
 
-module.exports = apiRouter
+export default apiRouter

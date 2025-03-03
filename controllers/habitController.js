@@ -1,4 +1,4 @@
-const {modelFunction} = require('../models/modelFunction')
+import {modelFunction} from '../models/modelFunction'
 
 exports.controllerFunction = (req,res,next) => {
     return modelFunction()

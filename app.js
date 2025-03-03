@@ -1,7 +1,9 @@
-const express = require('express')
+import express from 'express'
+import apiRouter from './router/api-router'
+import cors from 'cors'
+
 const app = express()
-const apiRouter = require('./router/api-router')
-const cors = require('cors')
+
 
 app.use(express.json())
 app.use(cors())
@@ -9,4 +11,4 @@ app.use(cors())
 app.use('/api', apiRouter)
 
 
-module.exports = app
+export default app
