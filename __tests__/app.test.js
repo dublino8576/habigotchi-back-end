@@ -41,6 +41,7 @@ describe("POST /api/users", () => {
           expect.objectContaining({
             user_id: expect.any(Number),
             user_name: expect.any(String),
+            user_onboarded: expect.any(Boolean),
             habits_tracked: expect.any(Number),
             coins_earned: expect.any(Number),
             coins_spent: expect.any(Number),
@@ -66,7 +67,7 @@ describe("TEST for invalid URL", () => {
   });
 });
 
-describe("TEST for invalid URL", () => {
+describe("TEST for 500 error", () => {
   test("500: Should respond with 'Endpoint not found', if a request is sending to an invalid/non existing path", () => {
     return request(app)
       .post("/api/users")
