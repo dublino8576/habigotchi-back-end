@@ -1,7 +1,7 @@
-import express from 'express'
-const apiRouter = express.Router()
+import express from "express";
+import categoryRouter from "./category-router";
+const apiRouter = express.Router();
 
-import {controllerFunction} from '../controllers/habitController'
-apiRouter.get('/' , controllerFunction)
+apiRouter.use("/categories", categoryRouter);
 
-export default apiRouter
+export default apiRouter;
