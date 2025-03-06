@@ -17,7 +17,6 @@ describe("GET /api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then((res) => {
-        console.log(res.body, "TEST");
         const categoriesArray = res.body.allCategories;
 
         expect(categoriesArray.length).toBe(3);
@@ -28,7 +27,7 @@ describe("GET /api/categories", () => {
   });
 });
 
-describe("POST /api/pets/user_name", () => {
+describe("POST /api/pets/:user_name", () => {
   test("should post a new pet to the pets table", () => {
     return request(app)
     .post("/api/pets/aldous").send({pet_name : "lil skibidi", pet_status : "i love fortnite", current_coin : 20})
@@ -47,3 +46,82 @@ describe("POST /api/pets/user_name", () => {
     })
   })
 })
+
+describe("POST /api/users", () => {
+  test("should respond with an array with a single object with all the properties of the added user", () => {
+    const reqBody = { user_name: "Dino" };
+
+    return request(app)
+      .post("/api/users")
+      .send(reqBody)
+      .expect(201)
+      .then(({ body: { addedUser } }) => {
+        expect(Array.isArray(addedUser)).toBe(true);
+        expect(...addedUser).toEqual(
+          expect.objectContaining({
+            user_id: expect.any(Number),
+            user_name: expect.any(String),
+            user_onboarded: expect.any(Boolean),
+            habits_tracked: expect.any(Number),
+            coins_earned: expect.any(Number),
+            coins_spent: expect.any(Number),
+            highest_streak: expect.any(Number),
+            bought_apple: expect.any(Number),
+            bought_strawberry: expect.any(Number),
+            bought_ball: expect.any(Number),
+            bought_ice_cream: expect.any(Number),
+          })
+        );
+      });
+  });
+});
+
+describe("TEST for invalid URL", () => {
+  test("404: Should respond with 'Endpoint not found', if a request is sending to an invalid/non existing path", () => {
+    return request(app)
+      .get("/api/iamgroot")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe("Endpoint not found");
+      });
+  });
+});
+
+describe("TEST for 500 error", () => {
+  test("500: Should respond with 'Endpoint not found', if a request is sending to an invalid/non existing path", () => {
+    return request(app)
+      .post("/api/users")
+      .send({ asdadsad: "asd", wqdsad: 23 })
+      .expect(500)
+      .then((response) => {
+        expect(response.body.error).toBe("Internal Server Error");
+      });
+  });
+});
+
+describe("GET /api/users", () => {
+  test("200: should return an array of user objects", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((res) => {
+        console.log(res.body.allUsers, "SCREAM");
+        const usersArray = res.body.allUsers;
+        expect(usersArray).toBeInstanceOf(Array);
+        expect(usersArray.length).toBeGreaterThan(0);
+        usersArray.forEach((user) => {
+          expect(user).toHaveProperty("user_name");
+          expect(user).toHaveProperty("user_onboarded");
+          expect(user).toHaveProperty("habits_tracked");
+          expect(user).toHaveProperty("coins_spent");
+          expect(user).toHaveProperty("highest_streak");
+          expect(user).toHaveProperty("bought_apple");
+          expect(user).toHaveProperty("bought_ice_cream");
+          expect(user).toHaveProperty("bought_strawberry");
+          expect(user).toHaveProperty("bought_ball");
+          expect(user).toHaveProperty("pet_id");
+        });
+      });
+  });
+});
+
