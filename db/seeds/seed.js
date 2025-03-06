@@ -45,10 +45,15 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
         CREATE TABLE users (
           user_id SERIAL PRIMARY KEY,
           user_name VARCHAR NOT NULL,
-          current_coin INT,
-          pet_id INT REFERENCES pets(pet_id),
-           habit_id INT REFERENCES habits(habit_id)
-        );`);
+          user_onboarded BOOLEAN DEFAULT False,
+          habits_tracked INT DEFAULT 0,
+           coins_earned INT DEFAULT 0,
+           coins_spent INT DEFAULT 0,
+           highest_streak INT DEFAULT 0,
+          bought_apple INT DEFAULT 0,
+          bought_water INT DEFAULT 0,
+           pet_id INT REFERENCES pets(pet_id)
+          );`);
     })
     .then(() => {
       const insertCategoriesQueryStr = format(
@@ -85,13 +90,8 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
     })
     .then(() => {
       const insertUsersQueryStr = format(
-        `INSERT INTO users (user_name, current_coin, pet_id, habit_id) VALUES %L;`,
-        user_data.map(({ user_name, current_coin, pet_id, habit_id }) => [
-          user_name,
-          current_coin,
-          pet_id,
-          habit_id,
-        ])
+        `INSERT INTO users (user_name, pet_id) VALUES %L;`,
+        user_data.map(({ user_name, pet_id }) => [user_name, pet_id])
       );
       return db.query(insertUsersQueryStr);
     });

@@ -27,3 +27,36 @@ describe("GET /api/categories", () => {
       });
   });
 });
+
+describe("GET /api/users", () => {
+  test("200: should return an array of user objects", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then((res) => {
+        console.log(res.body.allUsers, "SCREAM");
+        const usersArray = res.body.allUsers;
+        expect(usersArray).toBeInstanceOf(Array);
+        expect(usersArray.length).toBeGreaterThan(0);
+        usersArray.forEach((user) => {
+          expect(user).toHaveProperty("user_name");
+          expect(user).toHaveProperty("user_onboarded");
+          expect(user).toHaveProperty("habits_tracked");
+          expect(user).toHaveProperty("coins_spent");
+          expect(user).toHaveProperty("highest_streak");
+          expect(user).toHaveProperty("bought_apple");
+          expect(user).toHaveProperty("bought_water");
+          expect(user).toHaveProperty("pet_id");
+        });
+      });
+  });
+
+  test("404: should return error for an incorrect route", () => {
+    return request(app)
+      .get("/api/nonexistent")
+      .expect(404)
+      .then((res) => {
+        expect(res.body.error).toBe("Endpoint not found");
+      });
+  });
+});
