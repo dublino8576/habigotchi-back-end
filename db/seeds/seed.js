@@ -58,6 +58,7 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
           pet_id INT REFERENCES pets(pet_id)
 
         );`);
+
     })
     .then(() => {
       const insertCategoriesQueryStr = format(
@@ -95,10 +96,12 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
     .then(() => {
       const insertUsersQueryStr = format(
         `INSERT INTO users (user_name, pet_id) VALUES %L;`,
-        user_data.map(({ user_name, current_coin, pet_id }) => [
+
+        user_data.map(({ user_name, pet_id }) => [
           user_name,
           pet_id,
         ])
+
       );
       return db.query(insertUsersQueryStr);
     });

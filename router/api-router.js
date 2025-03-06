@@ -4,6 +4,7 @@ import usersRouter from "./users-router";
 const apiRouter = express.Router();
 
 apiRouter.use("/categories", categoryRouter);
+apiRouter.use("/users", userRouter);
 
 apiRouter.use("/users", usersRouter);
 
