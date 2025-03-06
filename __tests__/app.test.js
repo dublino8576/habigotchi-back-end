@@ -75,6 +75,9 @@ describe("TEST for 500 error", () => {
       .expect(500)
       .then((response) => {
         expect(response.body.error).toBe("Internal Server Error");
+      });
+  });
+});
 
 describe("GET /api/users", () => {
   test("200: should return an array of user objects", () => {
@@ -93,13 +96,11 @@ describe("GET /api/users", () => {
           expect(user).toHaveProperty("coins_spent");
           expect(user).toHaveProperty("highest_streak");
           expect(user).toHaveProperty("bought_apple");
-          expect(user).toHaveProperty("bought_water");
+          expect(user).toHaveProperty("bought_ice_cream");
+          expect(user).toHaveProperty("bought_strawberry");
+          expect(user).toHaveProperty("bought_ball");
           expect(user).toHaveProperty("pet_id");
         });
-      });
-  });
-
-
       });
   });
 });
