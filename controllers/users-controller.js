@@ -1,4 +1,4 @@
-import { createUser, fetchUsers } from "../models/users-model";
+import { createUser, fetchUsers } from "../models/users-model.js";
 
 export function addUser(req, res, next) {
   const reqBody = req.body;

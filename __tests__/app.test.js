@@ -28,24 +28,30 @@ describe("GET /api/categories", () => {
 });
 
 describe("POST /api/pets/:user_name", () => {
-  test("should post a new pet to the pets table", () => {
+  test.only("should post a new pet to the pets table", () => {
     return request(app)
-    .post("/api/pets/aldous").send({pet_name : "lil skibidi", pet_status : "i love fortnite", current_coin : 20})
-    .expect(202)
-    .then((res) => {
-      return db.query("SELECT * FROM pets ORDER BY pet_id DESC LIMIT 1")
+      .post("/api/pets")
+      .send({
+        pet_name: "lil skibidi",
+        pet_status: "i love fortnite",
+        current_coin: 20,
+      })
+      .expect(202)
+      .then((res) => {
+        return db
+          .query("SELECT * FROM pets ORDER BY pet_id DESC LIMIT 1")
           .then((result) => {
+            console.log("TEST", result.rows);
             const lastPet = result.rows[0];
             expect(lastPet.pet_name).toBe("lil skibidi");
             expect(lastPet.pet_status).toBe("i love fortnite");
-            expect(lastPet.pet_happiness).toBe(100); 
-            expect(lastPet.pet_health).toBe(100); 
+            expect(lastPet.pet_happiness).toBe(100);
+            expect(lastPet.pet_health).toBe(100);
             expect(lastPet.current_coin).toBe(20);
-            console.log(lastPet)
-          })
-    })
-  })
-})
+          });
+      });
+  });
+});
 
 describe("POST /api/users", () => {
   test("should respond with an array with a single object with all the properties of the added user", () => {
@@ -105,7 +111,6 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then((res) => {
-        console.log(res.body.allUsers, "SCREAM");
         const usersArray = res.body.allUsers;
         expect(usersArray).toBeInstanceOf(Array);
         expect(usersArray.length).toBeGreaterThan(0);
@@ -124,4 +129,3 @@ describe("GET /api/users", () => {
       });
   });
 });
-

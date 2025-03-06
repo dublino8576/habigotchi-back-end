@@ -1,7 +1,7 @@
 import express from "express";
-import {postPet} from "../controllers/pets-controller"
+import { postPet } from "../controllers/pets-controller.js";
 const petsRouter = express.Router();
 
-petsRouter.route("/:user_name").post(postPet)
+petsRouter.route("/").post(postPet);
 
-export default petsRouter
+export default petsRouter;
