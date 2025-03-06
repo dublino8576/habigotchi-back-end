@@ -23,9 +23,12 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
         CREATE TABLE pets (
     pet_id SERIAL PRIMARY KEY,
     pet_name VARCHAR NOT NULL,
-    current_coin INT DEFAULT 0 NOT NULL,
-    pet_health INT DEFAULT 0 NOT NULL,
-    pet_happiness INT DEFAULT 0 NOT NULL
+    pet_health INT NOT NULL,
+    pet_happiness INT NOT NULL,
+    pet_status VARCHAR,
+    current_coin INT,
+    pet_birthday TIMESTAMP DEFAULT NOW()
+
         );    
     `);
       return Promise.all([categoriesTablePromise, petsTablePromise]);
