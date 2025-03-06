@@ -24,7 +24,10 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
     pet_id SERIAL PRIMARY KEY,
     pet_name VARCHAR,
     pet_health INT,
-    pet_happiness INT
+    pet_happiness INT,
+    pet_status VARCHAR,
+    current_coin INT,
+    pet_birthday TIMESTAMP DEFAULT NOW()
         );    
     `);
       return Promise.all([categoriesTablePromise, petsTablePromise]);
