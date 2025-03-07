@@ -290,3 +290,27 @@ describe("GET /api/habits/:user_id", () => {
       });
   });
 });
+
+describe("DELETE /api/habits/:habit_id", () => {
+  test("should respond with an array of object containing the deleted habit", () => {
+    return request(app).delete("/api/habits/2").expect(200);
+  });
+
+  test("404: Should respond with 404 Not Found if habit_id is valid format but doesn't exist in the habits table", () => {
+    return request(app)
+      .delete("/api/habits/99")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe("Not found: Habit ID does not exist");
+      });
+  });
+
+  test("400:Should respond with 400 Bad request if habit_id is using a different format", () => {
+    return request(app)
+      .get("/api/habits/A")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+});

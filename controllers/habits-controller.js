@@ -1,4 +1,8 @@
-import { createHabit, fetchUserHabits } from "../models/habits-model.js";
+import {
+  createHabit,
+  fetchUserHabits,
+  deleteHabit,
+} from "../models/habits-model.js";
 
 export function addHabit(req, res, next) {
   const reqBody = req.body;
@@ -24,3 +28,17 @@ export function getUserHabits(req, res, next) {
       next(err);
     });
 }
+
+export function removeHabit(req, res, next) {
+  const { habit_id } = req.params;
+
+  deleteHabit(habit_id)
+    .then((deletedHabit) => {
+      res.status(200).send({ deletedHabit: deletedHabit });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+
