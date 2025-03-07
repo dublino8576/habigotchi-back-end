@@ -16,6 +16,7 @@ export function fetchUsers() {
   });
 }
 
+=
 export function fetchUserByUserId(user_id) {
   let SQLString = `SELECT * FROM users WHERE user_id = $1;`;
   return db.query(SQLString, [user_id]).then(({ rows }) => {
