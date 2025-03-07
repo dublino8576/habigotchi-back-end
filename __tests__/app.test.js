@@ -3,7 +3,6 @@ import app from "../app";
 import db from "../db/connection";
 import seed from "../db/seeds/seed";
 import * as test_data from "../db/data/test-data/index";
-import e from "cors";
 
 beforeEach(() => {
   return seed(test_data);
