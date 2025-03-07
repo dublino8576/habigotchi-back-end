@@ -3,6 +3,7 @@ import app from "../app";
 import db from "../db/connection";
 import seed from "../db/seeds/seed";
 import * as test_data from "../db/data/test-data/index";
+import usersRouter from "../router/users-router";
 
 beforeEach(() => {
   return seed(test_data);
@@ -185,6 +186,49 @@ describe("POST /api/habits/:user_id", () => {
     return request(app)
       .post("/api/habits/A")
       .send(reqBody)
+      .expect(400)
+      .then((response) => {
+        expect(response.body.error).toBe("Bad Request: invalid input syntax");
+      });
+  });
+});
+
+describe("GET /api/habits/:user_id", () => {
+  test("should respond with an array of objects containing each habit from the user_id provided", () => {
+    return request(app)
+      .get("/api/habits/3")
+      .expect(200)
+      .then(({ body: { userHabits } }) => {
+        expect(Array.isArray(userHabits)).toBe(true);
+
+        userHabits.forEach((habit) => {
+          expect(habit).toEqual(
+            expect.objectContaining({
+              habit_id: expect.any(Number),
+              habit_name: expect.any(String),
+              habit_frequency: expect.any(String),
+              habit_status: expect.any(String),
+              habit_added: expect.any(String),
+              habit_category: expect.any(String),
+              user_id: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+
+  test("404: Should respond with 404 Not Found if user_id is valid format but doesn't exist in the users table", () => {
+    return request(app)
+      .get("/api/habits/99")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe("Not found: User ID does not exist");
+      });
+  });
+
+  test("400:Should respond with 400 Bad request if user_id is using a different format", () => {
+    return request(app)
+      .get("/api/habits/A")
       .expect(400)
       .then((response) => {
         expect(response.body.error).toBe("Bad Request: invalid input syntax");
