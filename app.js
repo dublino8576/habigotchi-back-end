@@ -17,14 +17,22 @@ app.use((err, req, res, next) => {
       error: `Not found: ${err.detail}`,
     });
   } else next(err);
+
+app.use((err, req, res, next) => {
+  if (err.msg === "User not found") {
+    res.status(err.status).send({ msg: err.msg });
+  } else {
+    next(err);
+  }
+
 });
 
 app.use((err, req, res, next) => {
   if (err.code === "22P02") {
-    res.status(400).send({
-      error: `Bad Request: invalid input syntax`,
-    });
-  } else next(err);
+    res.status(400).send({ msg: "Bad Request" });
+  } else {
+    next(err);
+  }
 });
 
 app.all("*", (req, res) => {
