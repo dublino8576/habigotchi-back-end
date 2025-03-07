@@ -1,8 +1,8 @@
 import express from "express";
-import { addHabit } from "../controllers/habits-controller.js";
+import { addHabit, getUserHabits } from "../controllers/habits-controller.js";
 
 const habitsRouter = express.Router();
 
-habitsRouter.route("/:user_id").post(addHabit);
+habitsRouter.route("/:user_id").post(addHabit).get(getUserHabits);
 
 export default habitsRouter;

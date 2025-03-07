@@ -21,3 +21,13 @@ export function createHabit(reqBody, user_id) {
     });
   });
 }
+
+export function fetchUserHabits(user_id) {
+  let SQL = `SELECT * from habits WHERE user_id = $1`;
+
+  return checkUserIdExist(user_id).then(() => {
+    return db.query(SQL, [user_id]).then((response) => {
+      return response.rows;
+    });
+  });
+}
