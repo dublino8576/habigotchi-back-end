@@ -129,3 +129,48 @@ describe("GET /api/users", () => {
       });
   });
 });
+
+
+describe("GET/api/users/:user_id", () => {
+  test("GET 200: get users by id", () => {
+    return request(app)
+      .get("/api/users/1")
+      .expect(200)
+      .then((response) => {
+        const user = response.body.user;
+
+        expect(user).toEqual({
+          user_id: 1,
+          user_name: "dino",
+          habits_tracked: 0,
+          user_onboarded: false,
+          coins_earned: 0,
+          coins_spent: 0,
+          highest_streak: 0,
+          bought_apple: 0,
+          bought_strawberry: 0,
+          bought_ice_cream: 0,
+          bought_ball: 0,
+          pet_id: 1,
+        });
+      });
+  });
+
+  test("404 user not found", () => {
+    return request(app)
+      .get("/api/users/200")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("User not found");
+      });
+  });
+  test("400 id not a number", () => {
+    return request(app)
+      .get("/api/users/notanumber")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+});
+
