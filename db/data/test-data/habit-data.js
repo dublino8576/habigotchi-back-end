@@ -18,6 +18,27 @@ export const habit_data = [
     habit_frequency: "weekly",
     habit_status: "pending",
     habit_category: "Yoga",
-    user_id: 1,
+    user_id: 3,
+  },
+  {
+    habit_name: "fishing",
+    habit_frequency: "weekly",
+    habit_status: "pending",
+    habit_category: "Leisure",
+    user_id: 3,
+  },
+  {
+    habit_name: "fishing",
+    habit_frequency: "weekly",
+    habit_status: "pending",
+    habit_category: "Leisure",
+    user_id: 3,
+  },
+  {
+    habit_name: "guitars",
+    habit_frequency: "weekly",
+    habit_status: "pending",
+    habit_category: "Music",
+    user_id: 3,
   },
 ];
