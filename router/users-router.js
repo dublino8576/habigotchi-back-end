@@ -3,7 +3,7 @@ import {
   addUser,
   getUsers,
   getUserByUserId,
-} from "../controllers/users-controller";
+} from "../controllers/users-controller.js";
 
 const usersRouter = express.Router();
 

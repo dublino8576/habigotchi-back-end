@@ -2,7 +2,7 @@ import {
   createUser,
   fetchUserByUserId,
   fetchUsers,
-} from "../models/users-model";
+} from "../models/users-model.js";
 
 export function addUser(req, res, next) {
   const reqBody = req.body;

@@ -28,9 +28,9 @@ describe("GET /api/categories", () => {
 });
 
 describe("POST /api/pets/:user_name", () => {
-  test("should post a new pet to the pets table", () => {
+  test.only("should post a new pet to the pets table", () => {
     return request(app)
-      .post("/api/pets/aldous")
+      .post("/api/pets")
       .send({
         pet_name: "lil skibidi",
         pet_status: "i love fortnite",
@@ -41,6 +41,7 @@ describe("POST /api/pets/:user_name", () => {
         return db
           .query("SELECT * FROM pets ORDER BY pet_id DESC LIMIT 1")
           .then((result) => {
+            console.log("TEST", result.rows);
             const lastPet = result.rows[0];
             expect(lastPet.pet_name).toBe("lil skibidi");
             expect(lastPet.pet_status).toBe("i love fortnite");
@@ -129,6 +130,7 @@ describe("GET /api/users", () => {
   });
 });
 
+
 describe("GET/api/users/:user_id", () => {
   test("GET 200: get users by id", () => {
     return request(app)
@@ -171,3 +173,4 @@ describe("GET/api/users/:user_id", () => {
       });
   });
 });
+

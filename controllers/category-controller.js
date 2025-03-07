@@ -1,4 +1,4 @@
-import { fetchCategories } from "../models/category-model";
+import { fetchCategories } from "../models/category-model.js";
 
 export function getCategories(req, res, next) {
   return fetchCategories()
