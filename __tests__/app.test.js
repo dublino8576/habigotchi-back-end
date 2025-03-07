@@ -28,24 +28,32 @@ describe("GET /api/categories", () => {
   });
 });
 
+
 describe("POST /api/pets/", () => {
   test("should post a new pet to the pets table", () => {
     return request(app)
-    .post("/api/pets/").send({pet_name : "lil skibidi", pet_status : "i love fortnite", current_coin : 20})
+    .post("/api/pets/").send(
+      {pet_name : "lil skibidi",
+       pet_status : "i love fortnite",
+       current_coin : 20})
     .expect(202)
     .then((res) => {
       return db.query("SELECT * FROM pets ORDER BY pet_id DESC LIMIT 1")
+
           .then((result) => {
+            console.log("TEST", result.rows);
             const lastPet = result.rows[0];
             expect(lastPet.pet_name).toBe("lil skibidi");
             expect(lastPet.pet_status).toBe("i love fortnite");
-            expect(lastPet.pet_happiness).toBe(100); 
-            expect(lastPet.pet_health).toBe(100); 
+            expect(lastPet.pet_happiness).toBe(100);
+            expect(lastPet.pet_health).toBe(100);
             expect(lastPet.current_coin).toBe(20);
+
           })
     })
   })
 })
+
 
 describe("POST /api/users", () => {
   test("should respond with an array with a single object with all the properties of the added user", () => {
@@ -138,3 +146,46 @@ describe("GET /api/pets/:user_name", () => {
     })
     })
 })
+describe("GET/api/users/:user_id", () => {
+  test("GET 200: get users by id", () => {
+    return request(app)
+      .get("/api/users/1")
+      .expect(200)
+      .then((response) => {
+        const user = response.body.user;
+
+        expect(user).toEqual({
+          user_id: 1,
+          user_name: "dino",
+          habits_tracked: 0,
+          user_onboarded: false,
+          coins_earned: 0,
+          coins_spent: 0,
+          highest_streak: 0,
+          bought_apple: 0,
+          bought_strawberry: 0,
+          bought_ice_cream: 0,
+          bought_ball: 0,
+          pet_id: 1,
+        });
+      });
+  });
+
+  test("404 user not found", () => {
+    return request(app)
+      .get("/api/users/200")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("User not found");
+      });
+  });
+  test("400 id not a number", () => {
+    return request(app)
+      .get("/api/users/notanumber")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+});
+
