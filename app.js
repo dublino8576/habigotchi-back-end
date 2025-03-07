@@ -17,6 +17,7 @@ app.use((err, req, res, next) => {
       error: `Not found: ${err.detail}`,
     });
   } else next(err);
+});
 
 app.use((err, req, res, next) => {
   if (err.msg === "User not found") {
@@ -24,7 +25,6 @@ app.use((err, req, res, next) => {
   } else {
     next(err);
   }
-
 });
 
 app.use((err, req, res, next) => {
