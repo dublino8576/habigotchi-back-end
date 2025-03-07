@@ -1,5 +1,5 @@
 export const category_data = [
-  { category_name: "fitness" },
-  { category_name: "Nutrition" },
-  { category_name: "Mindfullness" },
+  { category_name: "fitness", user_id: 1 },
+  { category_name: "Nutrition", user_id: 1 },
+  { category_name: "Mindfullness", user_id: 2 },
 ];

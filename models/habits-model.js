@@ -1,0 +1,23 @@
+import db from "../db/connection.js";
+import { checkUserIdExist } from "../db/seeds/utils.js";
+
+export function createHabit(reqBody, user_id) {
+  const { habit_name, habit_frequency, habit_status, habit_category } = reqBody;
+  const args = [
+    habit_name,
+    habit_frequency,
+    habit_status,
+    user_id,
+    habit_category,
+  ];
+
+  let SQL = `INSERT INTO habits (habit_name,habit_frequency,habit_status,user_id,habit_category)
+        VALUES ($1,$2,$3,$4,$5)
+        RETURNING*`;
+
+  return checkUserIdExist(user_id).then(() => {
+    return db.query(SQL, args).then((response) => {
+      return response.rows[0];
+    });
+  });
+}

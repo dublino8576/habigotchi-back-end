@@ -9,12 +9,22 @@ app.use(cors());
 
 app.use("/api", apiRouter);
 
+//middleware error handlers
+
+app.use((err, req, res, next) => {
+  if (err.error === "Not found") {
+    res.status(404).send({
+      error: `Not found: ${err.detail}`,
+    });
+  } else next(err);
+
 app.use((err, req, res, next) => {
   if (err.msg === "User not found") {
     res.status(err.status).send({ msg: err.msg });
   } else {
     next(err);
   }
+
 });
 
 app.use((err, req, res, next) => {
@@ -24,6 +34,7 @@ app.use((err, req, res, next) => {
     next(err);
   }
 });
+
 app.all("*", (req, res) => {
   res.status(404).send({ error: "Endpoint not found" });
 });
