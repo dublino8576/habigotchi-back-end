@@ -15,13 +15,13 @@ export function fetchPet(user_name) {
     });
 }
 
-export function createPets(pet_name, pet_status, current_coin) {
+export function createPets(pet_name, pet_status) {
   return db
     .query(
-      `INSERT INTO pets (pet_name,pet_health,pet_happiness,pet_status,current_coin)
-        VALUES ($1,100,100,$2,$3)
+      `INSERT INTO pets (pet_name,pet_health,pet_happiness,pet_status)
+        VALUES ($1,100,100,$2)
         RETURNING*`,
-      [pet_name, pet_status, current_coin]
+      [pet_name, pet_status]
     )
     .then((response) => {
       return response.rows[0];

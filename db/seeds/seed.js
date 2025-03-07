@@ -21,7 +21,7 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
     pet_health INT NOT NULL,
     pet_happiness INT NOT NULL,
     pet_status VARCHAR ,
-    current_coin INT,
+    current_coin INT DEFAULT 100 NOT NULL,
     pet_birthday TIMESTAMP DEFAULT NOW());
     `);
     })

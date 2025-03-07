@@ -3,8 +3,6 @@ import app from "../app.js";
 import db from "../db/connection.js";
 import seed from "../db/seeds/seed.js";
 import * as test_data from "../db/data/test-data/index.js";
-import { response } from "express";
-
 
 beforeEach(() => {
   return seed(test_data);
@@ -36,7 +34,6 @@ describe("POST /api/pets/", () => {
       .send({
         pet_name: "lil skibidi",
         pet_status: "i love fortnite",
-        current_coin: 20,
       })
       .expect(202)
       .then((res) => {
@@ -49,7 +46,7 @@ describe("POST /api/pets/", () => {
             expect(lastPet.pet_status).toBe("i love fortnite");
             expect(lastPet.pet_happiness).toBe(100);
             expect(lastPet.pet_health).toBe(100);
-            expect(lastPet.current_coin).toBe(20);
+            expect(lastPet.current_coin).toBe(100);
           });
       });
   });
@@ -288,7 +285,7 @@ describe("GET /api/habits/:user_id", () => {
       .get("/api/habits/A")
       .expect(400)
       .then((response) => {
-        expect(response.body.error).toBe("Bad Request: invalid input syntax");
+        expect(response.body.msg).toBe("Bad Request");
       });
   });
 });
