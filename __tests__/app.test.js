@@ -175,7 +175,7 @@ describe("POST /api/habits/:user_id", () => {
       });
   });
 
-  test.only("400:should respond with an array with a single object with all the properties of the added habit", () => {
+  test("400:should respond with an array with a single object with all the properties of the added habit", () => {
     const reqBody = {
       habit_name: "Dino Habit",
       habit_frequency: "daily",
