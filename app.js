@@ -9,6 +9,24 @@ app.use(cors());
 
 app.use("/api", apiRouter);
 
+//middleware error handlers
+
+app.use((err, req, res, next) => {
+  if (err.error === "Not found") {
+    res.status(404).send({
+      error: `Not found: ${err.detail}`,
+    });
+  } else next(err);
+});
+
+app.use((err, req, res, next) => {
+  if (err.code === "22P02") {
+    res.status(400).send({
+      error: `Bad Request: invalid input syntax`,
+    });
+  } else next(err);
+});
+
 app.all("*", (req, res) => {
   res.status(404).send({ error: "Endpoint not found" });
 });

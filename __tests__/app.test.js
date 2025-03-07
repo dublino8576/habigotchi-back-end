@@ -3,6 +3,7 @@ import app from "../app";
 import db from "../db/connection";
 import seed from "../db/seeds/seed";
 import * as test_data from "../db/data/test-data/index";
+import e from "cors";
 
 beforeEach(() => {
   return seed(test_data);
@@ -28,7 +29,7 @@ describe("GET /api/categories", () => {
 });
 
 describe("POST /api/pets/:user_name", () => {
-  test.only("should post a new pet to the pets table", () => {
+  test("should post a new pet to the pets table", () => {
     return request(app)
       .post("/api/pets")
       .send({
@@ -41,7 +42,6 @@ describe("POST /api/pets/:user_name", () => {
         return db
           .query("SELECT * FROM pets ORDER BY pet_id DESC LIMIT 1")
           .then((result) => {
-            console.log("TEST", result.rows);
             const lastPet = result.rows[0];
             expect(lastPet.pet_name).toBe("lil skibidi");
             expect(lastPet.pet_status).toBe("i love fortnite");
@@ -126,6 +126,69 @@ describe("GET /api/users", () => {
           expect(user).toHaveProperty("bought_ball");
           expect(user).toHaveProperty("pet_id");
         });
+      });
+  });
+});
+
+describe("POST /api/habits/:user_id", () => {
+  test("201:should respond with an array with a single object with all the properties of the added habit", () => {
+    const reqBody = {
+      habit_name: "Dino Habit",
+      habit_frequency: "daily",
+      habit_status: "pending",
+      habit_category: "yoga",
+    };
+
+    return request(app)
+      .post("/api/habits/1")
+      .send(reqBody)
+      .expect(201)
+      .then(({ body: { addedHabit } }) => {
+        expect(addedHabit).toEqual(
+          expect.objectContaining({
+            habit_id: expect.any(Number),
+            habit_name: expect.any(String),
+            habit_frequency: expect.any(String),
+            habit_status: expect.any(String),
+            habit_added: expect.any(String),
+            habit_category: expect.any(String),
+            user_id: expect.any(Number),
+          })
+        );
+      });
+  });
+
+  test("404: Should respond with 404 Not Found if user_id is valid format but doesn't exist in the users table", () => {
+    const reqBody = {
+      habit_name: "Dino Habit",
+      habit_frequency: "daily",
+      habit_status: "pending",
+      habit_category: "yoga",
+    };
+
+    return request(app)
+      .post("/api/habits/99")
+      .send(reqBody)
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe("Not found: User ID does not exist");
+      });
+  });
+
+  test.only("400:should respond with an array with a single object with all the properties of the added habit", () => {
+    const reqBody = {
+      habit_name: "Dino Habit",
+      habit_frequency: "daily",
+      habit_status: "pending",
+      habit_category: "yoga",
+    };
+
+    return request(app)
+      .post("/api/habits/A")
+      .send(reqBody)
+      .expect(400)
+      .then((response) => {
+        expect(response.body.error).toBe("Bad Request: invalid input syntax");
       });
   });
 });
