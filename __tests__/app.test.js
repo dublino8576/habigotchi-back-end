@@ -1,8 +1,9 @@
 import request from "supertest";
-import app from "../app";
-import db from "../db/connection";
-import seed from "../db/seeds/seed";
-import * as test_data from "../db/data/test-data/index";
+import app from "../app.js";
+import db from "../db/connection.js";
+import seed from "../db/seeds/seed.js";
+import * as test_data from "../db/data/test-data/index.js";
+import { response } from "express";
 
 beforeEach(() => {
   return seed(test_data);
@@ -27,10 +28,10 @@ describe("GET /api/categories", () => {
   });
 });
 
-describe("POST /api/pets/:user_name", () => {
+describe("POST /api/pets/", () => {
   test("should post a new pet to the pets table", () => {
     return request(app)
-    .post("/api/pets/aldous").send({pet_name : "lil skibidi", pet_status : "i love fortnite", current_coin : 20})
+    .post("/api/pets/").send({pet_name : "lil skibidi", pet_status : "i love fortnite", current_coin : 20})
     .expect(202)
     .then((res) => {
       return db.query("SELECT * FROM pets ORDER BY pet_id DESC LIMIT 1")
@@ -41,7 +42,6 @@ describe("POST /api/pets/:user_name", () => {
             expect(lastPet.pet_happiness).toBe(100); 
             expect(lastPet.pet_health).toBe(100); 
             expect(lastPet.current_coin).toBe(20);
-            console.log(lastPet)
           })
     })
   })
@@ -105,7 +105,6 @@ describe("GET /api/users", () => {
       .get("/api/users")
       .expect(200)
       .then((res) => {
-        console.log(res.body.allUsers, "SCREAM");
         const usersArray = res.body.allUsers;
         expect(usersArray).toBeInstanceOf(Array);
         expect(usersArray.length).toBeGreaterThan(0);
@@ -125,3 +124,17 @@ describe("GET /api/users", () => {
   });
 });
 
+
+describe("GET /api/pets/:user_name", () => {
+  test("should get a pet that corresponds to the given user_name owner", () => {
+    return request(app)
+    .get("/api/pets/ryangawenda")
+    .expect(200)
+    .then((response) => {
+      console.log(response.body)
+      expect(response.body.pet_name).toEqual("optimus")
+      expect(response.body.pet_happiness).toEqual(9)
+      expect(response.body.pet_health).toEqual(3)
+    })
+    })
+})

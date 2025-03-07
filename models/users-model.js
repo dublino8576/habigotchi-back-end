@@ -1,4 +1,4 @@
-import db from "../db/connection";
+import db from "../db/connection.js";
 
 export function createUser(reqBody) {
   const { user_name } = reqBody;
@@ -16,3 +16,4 @@ export function fetchUsers() {
     return res.rows;
   });
 }
+
