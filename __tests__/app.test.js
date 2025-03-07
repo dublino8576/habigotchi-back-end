@@ -11,6 +11,29 @@ afterAll(() => {
   return db.end();
 });
 
+describe("TEST for invalid URL", () => {
+  test("404: Should respond with 'Endpoint not found', if a request is sending to an invalid/non existing path", () => {
+    return request(app)
+      .get("/api/iamgroot")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe("Endpoint not found");
+      });
+  });
+});
+
+describe("TEST for 500 error", () => {
+  test("500: Should respond with 'Endpoint not found', if a request is sending to an invalid/non existing path", () => {
+    return request(app)
+      .post("/api/users")
+      .send({ asdadsad: "asd", wqdsad: 23 })
+      .expect(500)
+      .then((response) => {
+        expect(response.body.error).toBe("Internal Server Error");
+      });
+  });
+});
+
 describe("GET /api/categories", () => {
   test("should respond with an array of categories", () => {
     return request(app)
@@ -52,6 +75,19 @@ describe("POST /api/pets/", () => {
   });
 });
 
+describe("GET /api/pets/:user_name", () => {
+  test("should get a pet that corresponds to the given user_name owner", () => {
+    return request(app)
+      .get("/api/pets/ryangawenda")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.pet_name).toEqual("optimus");
+        expect(response.body.pet_happiness).toEqual(9);
+        expect(response.body.pet_health).toEqual(3);
+      });
+  });
+});
+
 describe("POST /api/users", () => {
   test("should respond with an array with a single object with all the properties of the added user", () => {
     const reqBody = { user_name: "Dino" };
@@ -81,29 +117,6 @@ describe("POST /api/users", () => {
   });
 });
 
-describe("TEST for invalid URL", () => {
-  test("404: Should respond with 'Endpoint not found', if a request is sending to an invalid/non existing path", () => {
-    return request(app)
-      .get("/api/iamgroot")
-      .expect(404)
-      .then((response) => {
-        expect(response.body.error).toBe("Endpoint not found");
-      });
-  });
-});
-
-describe("TEST for 500 error", () => {
-  test("500: Should respond with 'Endpoint not found', if a request is sending to an invalid/non existing path", () => {
-    return request(app)
-      .post("/api/users")
-      .send({ asdadsad: "asd", wqdsad: 23 })
-      .expect(500)
-      .then((response) => {
-        expect(response.body.error).toBe("Internal Server Error");
-      });
-  });
-});
-
 describe("GET /api/users", () => {
   test("200: should return an array of user objects", () => {
     return request(app)
@@ -125,6 +138,49 @@ describe("GET /api/users", () => {
           expect(user).toHaveProperty("bought_ball");
           expect(user).toHaveProperty("pet_id");
         });
+      });
+  });
+});
+
+describe("GET/api/users/:user_id", () => {
+  test("GET 200: get users by id", () => {
+    return request(app)
+      .get("/api/users/1")
+      .expect(200)
+      .then((response) => {
+        const user = response.body.user;
+
+        expect(user).toEqual({
+          user_id: 1,
+          user_name: "dino",
+          habits_tracked: 0,
+          user_onboarded: false,
+          coins_earned: 0,
+          coins_spent: 0,
+          highest_streak: 0,
+          bought_apple: 0,
+          bought_strawberry: 0,
+          bought_ice_cream: 0,
+          bought_ball: 0,
+          pet_id: 1,
+        });
+      });
+  });
+
+  test("404 user not found", () => {
+    return request(app)
+      .get("/api/users/200")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("User not found");
+      });
+  });
+  test("400 id not a number", () => {
+    return request(app)
+      .get("/api/users/notanumber")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
       });
   });
 });
@@ -185,61 +241,6 @@ describe("POST /api/habits/:user_id", () => {
     return request(app)
       .post("/api/habits/A")
       .send(reqBody)
-      .expect(400)
-      .then((response) => {
-        expect(response.body.msg).toBe("Bad Request");
-      });
-  });
-});
-
-describe("GET /api/pets/:user_name", () => {
-  test("should get a pet that corresponds to the given user_name owner", () => {
-    return request(app)
-      .get("/api/pets/ryangawenda")
-      .expect(200)
-      .then((response) => {
-        expect(response.body.pet_name).toEqual("optimus");
-        expect(response.body.pet_happiness).toEqual(9);
-        expect(response.body.pet_health).toEqual(3);
-      });
-  });
-});
-describe("GET/api/users/:user_id", () => {
-  test("GET 200: get users by id", () => {
-    return request(app)
-      .get("/api/users/1")
-      .expect(200)
-      .then((response) => {
-        const user = response.body.user;
-
-        expect(user).toEqual({
-          user_id: 1,
-          user_name: "dino",
-          habits_tracked: 0,
-          user_onboarded: false,
-          coins_earned: 0,
-          coins_spent: 0,
-          highest_streak: 0,
-          bought_apple: 0,
-          bought_strawberry: 0,
-          bought_ice_cream: 0,
-          bought_ball: 0,
-          pet_id: 1,
-        });
-      });
-  });
-
-  test("404 user not found", () => {
-    return request(app)
-      .get("/api/users/200")
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).toBe("User not found");
-      });
-  });
-  test("400 id not a number", () => {
-    return request(app)
-      .get("/api/users/notanumber")
       .expect(400)
       .then((response) => {
         expect(response.body.msg).toBe("Bad Request");
