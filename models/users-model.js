@@ -12,7 +12,17 @@ export function createUser(reqBody) {
 
 export function fetchUsers() {
   return db.query("SELECT * FROM users").then((res) => {
-
     return res.rows;
+  });
+}
+
+export function fetchUserByUserId(user_id) {
+  let SQLString = `SELECT * FROM users WHERE user_id = $1;`;
+  return db.query(SQLString, [user_id]).then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ msg: "User not found", status: 404 });
+    } else {
+      return rows[0];
+    }
   });
 }
