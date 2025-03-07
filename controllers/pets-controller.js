@@ -1,4 +1,4 @@
-import { createPets } from "../models/pets-model.js";
+import { createPets, fetchPet } from "../models/pets-model.js";
 
 export function postPet(req, res, next) {
   const pet_name = req.body.pet_name;
@@ -8,6 +8,17 @@ export function postPet(req, res, next) {
   return createPets(pet_name, pet_status, coins)
     .then((addedPet) => {
       res.status(202).send({ addedPet: addedPet });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+export function getPet(req, res, next) {
+  const user_name = req.params.user_name;
+  return fetchPet(user_name)
+    .then((petData) => {
+      res.status(200).send(petData[0]);
     })
     .catch((err) => {
       next(err);

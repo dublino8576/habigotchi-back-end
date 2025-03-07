@@ -1,4 +1,20 @@
 import db from "../db/connection.js";
+
+export function fetchPet(user_name) {
+  return db
+    .query(
+      `
+        SELECT pets.*
+        FROM users
+        JOIN pets ON users.pet_id = pets.pet_id
+        WHERE users.user_name = $1`,
+      [user_name]
+    )
+    .then((result) => {
+      return result.rows;
+    });
+}
+
 export function createPets(pet_name, pet_status, current_coin) {
   return db
     .query(

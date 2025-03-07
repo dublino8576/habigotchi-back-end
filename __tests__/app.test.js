@@ -1,9 +1,10 @@
 import request from "supertest";
-import app from "../app";
-import db from "../db/connection";
-import seed from "../db/seeds/seed";
-import * as test_data from "../db/data/test-data/index";
-import usersRouter from "../router/users-router";
+import app from "../app.js";
+import db from "../db/connection.js";
+import seed from "../db/seeds/seed.js";
+import * as test_data from "../db/data/test-data/index.js";
+import { response } from "express";
+
 
 beforeEach(() => {
   return seed(test_data);
@@ -28,10 +29,10 @@ describe("GET /api/categories", () => {
   });
 });
 
-describe("POST /api/pets/:user_name", () => {
+describe("POST /api/pets/", () => {
   test("should post a new pet to the pets table", () => {
     return request(app)
-      .post("/api/pets")
+      .post("/api/pets/")
       .send({
         pet_name: "lil skibidi",
         pet_status: "i love fortnite",
@@ -41,6 +42,7 @@ describe("POST /api/pets/:user_name", () => {
       .then((res) => {
         return db
           .query("SELECT * FROM pets ORDER BY pet_id DESC LIMIT 1")
+
           .then((result) => {
             const lastPet = result.rows[0];
             expect(lastPet.pet_name).toBe("lil skibidi");
@@ -188,7 +190,62 @@ describe("POST /api/habits/:user_id", () => {
       .send(reqBody)
       .expect(400)
       .then((response) => {
-        expect(response.body.error).toBe("Bad Request: invalid input syntax");
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+});
+
+describe("GET /api/pets/:user_name", () => {
+  test("should get a pet that corresponds to the given user_name owner", () => {
+    return request(app)
+      .get("/api/pets/ryangawenda")
+      .expect(200)
+      .then((response) => {
+        expect(response.body.pet_name).toEqual("optimus");
+        expect(response.body.pet_happiness).toEqual(9);
+        expect(response.body.pet_health).toEqual(3);
+      });
+  });
+});
+describe("GET/api/users/:user_id", () => {
+  test("GET 200: get users by id", () => {
+    return request(app)
+      .get("/api/users/1")
+      .expect(200)
+      .then((response) => {
+        const user = response.body.user;
+
+        expect(user).toEqual({
+          user_id: 1,
+          user_name: "dino",
+          habits_tracked: 0,
+          user_onboarded: false,
+          coins_earned: 0,
+          coins_spent: 0,
+          highest_streak: 0,
+          bought_apple: 0,
+          bought_strawberry: 0,
+          bought_ice_cream: 0,
+          bought_ball: 0,
+          pet_id: 1,
+        });
+      });
+  });
+
+  test("404 user not found", () => {
+    return request(app)
+      .get("/api/users/200")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("User not found");
+      });
+  });
+  test("400 id not a number", () => {
+    return request(app)
+      .get("/api/users/notanumber")
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
       });
   });
 });
