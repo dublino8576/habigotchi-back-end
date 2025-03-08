@@ -314,3 +314,69 @@ describe("DELETE /api/habits/:habit_id", () => {
       });
   });
 });
+
+describe("PATCH /api/habits/:habit_id", () => {
+  test("200:should respond with an array with a single object with all the properties of the added habit", () => {
+    const reqBody = {
+      habit_name: "updated_running",
+      habit_frequency: "daily_updated",
+      habit_status: "completed_updated",
+    };
+
+    return request(app)
+      .patch("/api/habits/1")
+      .send(reqBody)
+      .expect(200)
+      .then(({ body: { updatedHabit } }) => {
+        expect(updatedHabit.habit_name).toEqual("updated_running");
+        expect(updatedHabit.habit_frequency).toEqual("daily_updated");
+        expect(updatedHabit.habit_status).toEqual("completed_updated");
+      });
+  });
+
+  test("200:should be able to handle if you edit only one property of the habit", () => {
+    const reqBody = {
+      habit_name: "updated_running",
+    };
+
+    return request(app)
+      .patch("/api/habits/1")
+      .send(reqBody)
+      .expect(200)
+      .then(({ body: { updatedHabit } }) => {
+        expect(updatedHabit.habit_name).toEqual("updated_running");
+      });
+  });
+
+  test("404: Should respond with 404 Not Found if habit_id is valid format but doesn't exist in the habits table", () => {
+    const reqBody = {
+      habit_name: "updated_running",
+      habit_frequency: "daily_updated",
+      habit_status: "completed_updated",
+    };
+
+    return request(app)
+      .patch("/api/habits/99")
+      .send(reqBody)
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe("Not found: Habit ID does not exist");
+      });
+  });
+
+  test("400:should respond with 400 Bad Request if habit_id was using a different format instead of a number", () => {
+    const reqBody = {
+      habit_name: "updated_running",
+      habit_frequency: "daily_updated",
+      habit_status: "completed_updated",
+    };
+
+    return request(app)
+      .patch("/api/habits/A")
+      .send(reqBody)
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toBe("Bad Request");
+      });
+  });
+});

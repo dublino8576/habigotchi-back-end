@@ -41,3 +41,36 @@ export function deleteHabit(habit_id) {
     });
   });
 }
+
+export function editHabit(habit_id, reqBody) {
+  const { habit_name, habit_frequency, habit_status } = reqBody;
+  let updateProperties = [];
+  const args = [];
+  let index = 1;
+
+  let SQL = `UPDATE habits SET `;
+
+  if (habit_name) {
+    updateProperties.push(`habit_name = $${index++}`);
+    args.push(habit_name);
+  }
+  if (habit_status) {
+    updateProperties.push(`habit_status = $${index++}`);
+    args.push(habit_status);
+  }
+  if (habit_frequency) {
+    updateProperties.push(`habit_frequency = $${index++}`);
+    args.push(habit_frequency);
+  }
+
+  args.push(habit_id);
+  SQL += updateProperties.join(", ");
+  SQL += ` WHERE habit_id = $${index++}
+             RETURNING *`;
+
+  return checkHabitIdExists(habit_id).then(() => {
+    return db.query(SQL, args).then((response) => {
+      return response.rows[0];
+    });
+  });
+}

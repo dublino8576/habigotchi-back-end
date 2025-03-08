@@ -2,6 +2,7 @@ import {
   createHabit,
   fetchUserHabits,
   deleteHabit,
+  editHabit,
 } from "../models/habits-model.js";
 
 export function addHabit(req, res, next) {
@@ -41,4 +42,15 @@ export function removeHabit(req, res, next) {
     });
 }
 
+export function updateHabit(req, res, next) {
+  const { habit_id } = req.params;
+  const reqBody = req.body;
 
+  editHabit(habit_id, reqBody)
+    .then((updatedHabit) => {
+      res.status(200).send({ updatedHabit: updatedHabit });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
