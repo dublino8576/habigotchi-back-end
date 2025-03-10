@@ -1,4 +1,9 @@
-import { createHabit, fetchUserHabits } from "../models/habits-model.js";
+import {
+  createHabit,
+  fetchUserHabits,
+  deleteHabit,
+  editHabit,
+} from "../models/habits-model.js";
 
 export function addHabit(req, res, next) {
   const reqBody = req.body;
@@ -19,6 +24,31 @@ export function getUserHabits(req, res, next) {
   fetchUserHabits(user_id)
     .then((userHabits) => {
       res.status(200).send({ userHabits: userHabits });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+export function removeHabit(req, res, next) {
+  const { habit_id } = req.params;
+
+  deleteHabit(habit_id)
+    .then((deletedHabit) => {
+      res.status(200).send({ deletedHabit: deletedHabit });
+    })
+    .catch((err) => {
+      next(err);
+    });
+}
+
+export function updateHabit(req, res, next) {
+  const { habit_id } = req.params;
+  const reqBody = req.body;
+
+  editHabit(habit_id, reqBody)
+    .then((updatedHabit) => {
+      res.status(200).send({ updatedHabit: updatedHabit });
     })
     .catch((err) => {
       next(err);
