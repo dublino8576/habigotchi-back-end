@@ -248,7 +248,6 @@ describe("POST /api/habits/:user_id", () => {
   });
 });
 
-
 describe("GET /api/pets/:user_name", () => {
   test("should get a pet that corresponds to the given user_name owner", () => {
     return request(app)
@@ -265,7 +264,8 @@ describe("GET /api/pets/:user_name", () => {
 describe("PATCH /api/pets/:user_name", () => {
   test("should patch the pet that corresponds to the given user_name owner - 1 parameter", () => {
     return request(app)
-      .patch("/api/pets/ryangawenda").send({pet_name : "Bumblebee"})
+      .patch("/api/pets/ryangawenda")
+      .send({ pet_name: "Bumblebee" })
       .expect(204)
       .then((response) => {
         return db
@@ -274,12 +274,13 @@ describe("PATCH /api/pets/:user_name", () => {
           .then((result) => {
             const lastPet = result.rows[1];
             expect(lastPet.pet_name).toBe("Bumblebee");
-          })
+          });
       });
   });
   test("should patch the pet that corresponds to the given user_name owner - multiple parameters", () => {
     return request(app)
-      .patch("/api/pets/ryangawenda").send({pet_name : "Bumblebee",pet_health: 82, pet_happiness : 99})
+      .patch("/api/pets/ryangawenda")
+      .send({ pet_name: "Bumblebee", pet_health: 82, pet_happiness: 99 })
       .expect(204)
       .then((response) => {
         return db
@@ -289,12 +290,11 @@ describe("PATCH /api/pets/:user_name", () => {
             const lastPet = result.rows[1];
             expect(lastPet.pet_name).toBe("Bumblebee");
             expect(lastPet.pet_health).toBe(82);
-            expect(lastPet.pet_happiness).toBe(99)
-          })
+            expect(lastPet.pet_happiness).toBe(99);
+          });
       });
   });
 });
-
 
 describe("GET/api/users/:user_id", () => {
   test("GET 200: get users by id", () => {
@@ -339,7 +339,6 @@ describe("GET/api/users/:user_id", () => {
   });
 });
 
-
 describe("GET /api/habits/:user_id", () => {
   test("should respond with an array of objects containing each habit from the user_id provided", () => {
     return request(app)
@@ -383,16 +382,12 @@ describe("GET /api/habits/:user_id", () => {
   });
 });
 
-
-
-
 describe("TEST for finding endpoints", () => {
   test("returns endpoints list", () => {
     return request(app)
       .get("/api/endpoints")
       .expect(200)
       .then((response) => {
-        console.log(response)
         expect(typeof response).toBe("object");
       });
   });
@@ -484,10 +479,9 @@ describe("PATCH /api/habits/:habit_id", () => {
       .expect(400)
       .then((response) => {
         expect(response.body.msg).toBe("Bad Request");
-      
-    });
-  })
-})
+      });
+  });
+});
 
 describe("PATCH /api/users/:user_id", () => {
   test("201:should update a user's property based on the argument passed in from the request body ", () => {
@@ -519,4 +513,3 @@ describe("PATCH /api/users/:user_id", () => {
       });
   });
 });
-
