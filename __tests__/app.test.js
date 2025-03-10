@@ -204,6 +204,41 @@ describe("GET /api/pets/:user_name", () => {
       });
   });
 });
+
+describe("PATCH /api/pets/:user_name", () => {
+  test("should patch the pet that corresponds to the given user_name owner - 1 parameter", () => {
+    return request(app)
+      .patch("/api/pets/ryangawenda").send({pet_name : "Bumblebee"})
+      .expect(204)
+      .then((response) => {
+        return db
+          .query("SELECT * FROM pets ORDER BY pet_id ASC LIMIT 3")
+
+          .then((result) => {
+            const lastPet = result.rows[1];
+            expect(lastPet.pet_name).toBe("Bumblebee");
+          })
+      });
+  });
+  test("should patch the pet that corresponds to the given user_name owner - multiple parameters", () => {
+    return request(app)
+      .patch("/api/pets/ryangawenda").send({pet_name : "Bumblebee",pet_health: 82, pet_happiness : 99})
+      .expect(204)
+      .then((response) => {
+        return db
+          .query("SELECT * FROM pets ORDER BY pet_id ASC LIMIT 3")
+
+          .then((result) => {
+            const lastPet = result.rows[1];
+            expect(lastPet.pet_name).toBe("Bumblebee");
+            expect(lastPet.pet_health).toBe(82);
+            expect(lastPet.pet_happiness).toBe(99)
+          })
+      });
+  });
+});
+
+
 describe("GET/api/users/:user_id", () => {
   test("GET 200: get users by id", () => {
     return request(app)
