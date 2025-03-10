@@ -1,0 +1,168 @@
+{
+    "GET /api/categories": {
+      "description": "should respond with an array of categories",
+      "queries": [],
+      "exampleResponse": {
+        "allCategories": [
+          {
+            "category_name": "fitness"
+          },
+          {
+            "category_name": "study"
+          },
+          {
+            "category_name": "yoga"
+          }
+        ]
+      }
+    },
+    "POST /api/pets/": {
+      "description": "should post a new pet to the pets table",
+      "queries": [],
+      "body": "{ pet_name: 'lil skibidi', pet_status: 'i love fortnite' }",
+      "exampleResponse": {}
+    },
+    "POST /api/users": {
+      "description": "should respond with an array with a single object with all the properties of the added user",
+      "queries": [],
+      "body": "{ user_name: 'Dino' }",
+      "exampleResponse": {
+        "addedUser": [
+          {
+            "user_id": 4,
+            "user_name": "Dino",
+            "user_onboarded": false,
+            "habits_tracked": 0,
+            "coins_earned": 0,
+            "coins_spent": 0,
+            "highest_streak": 0,
+            "bought_apple": 0,
+            "bought_strawberry": 0,
+            "bought_ball": 0,
+            "bought_ice_cream": 0
+          }
+        ]
+      }
+    },
+    "GET /api/users": {
+      "description": "200: should return an array of user objects",
+      "queries": [],
+      "exampleResponse": {
+        "allUsers": [
+          {
+            "user_name": "dino",
+            "user_onboarded": false,
+            "habits_tracked": 0,
+            "coins_spent": 0,
+            "highest_streak": 0,
+            "bought_apple": 0,
+            "bought_ice_cream": 0,
+            "bought_strawberry": 0,
+            "bought_ball": 0,
+            "pet_id": 1
+          },
+          {
+            "user_name": "ryangawenda",
+            "user_onboarded": false,
+            "habits_tracked": 0,
+            "coins_spent": 0,
+            "highest_streak": 0,
+            "bought_apple": 0,
+            "bought_ice_cream": 0,
+            "bought_strawberry": 0,
+            "bought_ball": 0,
+            "pet_id": 2
+          },
+          {
+            "user_name": "ryan",
+            "user_onboarded": false,
+            "habits_tracked": 0,
+            "coins_spent": 0,
+            "highest_streak": 0,
+            "bought_apple": 0,
+            "bought_ice_cream": 0,
+            "bought_strawberry": 0,
+            "bought_ball": 0,
+            "pet_id": 3
+          }
+        ]
+      }
+    },
+    "POST /api/habits/:user_id": {
+      "description": "201:should respond with an array with a single object with all the properties of the added habit",
+      "queries": ["user_id"],
+      "body": "{ habit_name: 'Dino Habit', habit_frequency: 'daily', habit_status: 'pending', habit_category: 'yoga' }",
+      "exampleResponse": {
+        "addedHabit": {
+          "habit_id": 4,
+          "habit_name": "Dino Habit",
+          "habit_frequency": "daily",
+          "habit_status": "pending",
+          "habit_added": "2024-03-07T00:00:00.000Z",
+          "habit_category": "yoga",
+          "user_id": 1
+        }
+      }
+    },
+    "GET /api/pets/:user_name": {
+      "description": "should get a pet that corresponds to the given user_name owner",
+      "queries": ["user_name"],
+      "exampleResponse": {
+        "pet_name": "optimus",
+        "pet_happiness": 9,
+        "pet_health": 3
+      }
+    },
+    "PATCH /api/pets/:user_name": {
+      "description": "should patch the pet that corresponds to the given user_name owner - 1 parameter",
+      "queries": ["user_name"],
+      "body": "{ pet_name: 'Bumblebee' }",
+      "exampleResponse": {}
+    },
+    "GET /api/users/:user_id": {
+      "description": "GET 200: get users by id",
+      "queries": ["user_id"],
+      "exampleResponse": {
+        "user": {
+          "user_id": 1,
+          "user_name": "dino",
+          "habits_tracked": 0,
+          "user_onboarded": false,
+          "coins_earned": 0,
+          "coins_spent": 0,
+          "highest_streak": 0,
+          "bought_apple": 0,
+          "bought_strawberry": 0,
+          "bought_ice_cream": 0,
+          "bought_ball": 0,
+          "pet_id": 1
+        }
+      }
+    },
+    "GET /api/habits/:user_id": {
+      "description": "should respond with an array of objects containing each habit from the user_id provided",
+      "queries": ["user_id"],
+      "exampleResponse": {
+        "userHabits": [
+          {
+            "habit_id": 1,
+            "habit_name": "coding",
+            "habit_frequency": "daily",
+            "habit_status": "pending",
+            "habit_added": "2024-03-07T00:00:00.000Z",
+            "habit_category": "programming",
+            "user_id": 3
+          },
+          {
+            "habit_id": 2,
+            "habit_name": "coding2",
+            "habit_frequency": "daily",
+            "habit_status": "pending",
+            "habit_added": "2024-03-07T00:00:00.000Z",
+            "habit_category": "programming",
+            "user_id": 3
+          }
+        ]
+      }
+    }
+  }
