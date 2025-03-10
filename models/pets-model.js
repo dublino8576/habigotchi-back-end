@@ -27,3 +27,16 @@ export function createPets(pet_name, pet_status) {
       return response.rows[0];
     });
 }
+
+export function changePet(new_name = null,new_health = null,new_happiness = null, user_name = null) {
+  return db
+  .query(`
+  UPDATE pets
+  SET 
+  pet_name = COALESCE($1, pet_name),
+  pet_health = COALESCE($2, pet_health),
+  pet_happiness = COALESCE($3, pet_happiness)
+  WHERE pet_id = (SELECT pet_id FROM users WHERE user_name = $4)
+  RETURNING *`,
+  [new_name,new_health,new_happiness,user_name])
+}
