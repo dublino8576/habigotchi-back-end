@@ -68,8 +68,8 @@ describe("POST /api/pets/", () => {
             expect(lastPet.pet_name).toBe("lil skibidi");
             expect(lastPet.pet_status).toBe("i love fortnite");
             expect(lastPet.pet_happiness).toBe(100);
-            expect(lastPet.pet_health).toBe(100);
-            expect(lastPet.current_coin).toBe(100);
+            expect(lastPet.pet_health).toBe(80);
+            expect(lastPet.current_coin).toBe(200);
           });
       });
   });
