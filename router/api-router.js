@@ -3,7 +3,9 @@ import categoryRouter from "./category-router.js";
 import usersRouter from "./users-router.js";
 import petsRouter from "./pets-router.js";
 import habitsRouter from "./habits-router.js";
+
 import { endpoints } from "../controllers/api-controller.js";
+
 
 
 const apiRouter = express.Router();
