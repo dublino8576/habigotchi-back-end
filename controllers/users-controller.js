@@ -1,10 +1,9 @@
-
 import {
   createUser,
   fetchUserByUserId,
   fetchUsers,
+  updateUser,
 } from "../models/users-model.js";
-
 
 export function addUser(req, res, next) {
   const reqBody = req.body;
@@ -35,6 +34,28 @@ export function getUserByUserId(req, res, next) {
       res.status(200).send({ user: user });
     })
     .catch((err) => {
+      next(err);
+    });
+}
+
+export function patchUser(req, res) {
+  const userId = req.params.user_id;
+  const updateData = req.body;
+
+  if (!userId) {
+    return res.status(400).send({ error: "User ID is required" });
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    return res.status(400).send({ error: "No fields to update" });
+  }
+
+  updateUser(userId, updateData)
+    .then((upDatedUser) => {
+      res.status(200).send({ upDatedUser: upDatedUser });
+    })
+    .catch((err) => {
+      console.log("ER", err);
       next(err);
     });
 }
