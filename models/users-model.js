@@ -41,6 +41,7 @@ export function updateUser(userId, updateData) {
     bought_ice_cream,
     pet_id,
   } = updateData;
+
   let propertiesToUpdate = [];
   let index = 1;
   const values = [];
@@ -95,6 +96,8 @@ export function updateUser(userId, updateData) {
 
   SQL += propertiesToUpdate.join(", ");
   SQL += ` WHERE user_id = $${index++} RETURNING *`;
+
+  console.log(SQL);
 
   return db.query(SQL, values).then((response) => {
     return response.rows;

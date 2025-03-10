@@ -512,4 +512,19 @@ describe("PATCH /api/users/:user_id", () => {
         expect(user.pet_id).toBe(2);
       });
   });
+
+  test.only("201:should update a user's property even if request body is only carrying one property ", () => {
+    const reqBody = {
+      pet_id: 2,
+    };
+
+    return request(app)
+      .patch("/api/users/1")
+      .send(reqBody)
+      .expect(200)
+      .then((response) => {
+        const user = response.body.upDatedUser[0];
+        expect(user.pet_id).toBe(2);
+      });
+  });
 });
