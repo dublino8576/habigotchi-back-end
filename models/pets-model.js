@@ -19,7 +19,7 @@ export function createPets(pet_name, pet_status) {
   return db
     .query(
       `INSERT INTO pets (pet_name,pet_health,pet_happiness,pet_status)
-        VALUES ($1,100,100,$2)
+        VALUES ($1,80,100,$2)
         RETURNING*`,
       [pet_name, pet_status]
     )
@@ -28,9 +28,14 @@ export function createPets(pet_name, pet_status) {
     });
 }
 
-export function changePet(new_name = null,new_health = null,new_happiness = null, user_name = null) {
-  return db
-  .query(`
+export function changePet(
+  new_name = null,
+  new_health = null,
+  new_happiness = null,
+  user_name = null
+) {
+  return db.query(
+    `
   UPDATE pets
   SET 
   pet_name = COALESCE($1, pet_name),
@@ -38,5 +43,6 @@ export function changePet(new_name = null,new_health = null,new_happiness = null
   pet_happiness = COALESCE($3, pet_happiness)
   WHERE pet_id = (SELECT pet_id FROM users WHERE user_name = $4)
   RETURNING *`,
-  [new_name,new_health,new_happiness,user_name])
+    [new_name, new_health, new_happiness, user_name]
+  );
 }
