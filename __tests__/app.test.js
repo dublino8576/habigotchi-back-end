@@ -324,3 +324,17 @@ describe("GET /api/habits/:user_id", () => {
       });
   });
 });
+
+
+
+describe("TEST for finding endpoints", () => {
+  test("returns endpoints list", () => {
+    return request(app)
+      .get("/api/endpoints")
+      .expect(200)
+      .then((response) => {
+        console.log(response)
+        expect(typeof response).toBe("object");
+      });
+  });
+});
