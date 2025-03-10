@@ -289,3 +289,34 @@ describe("GET /api/habits/:user_id", () => {
       });
   });
 });
+
+describe("PATCH /api/users/:user_id", () => {
+  test("201:should update a user's property based on the argument passed in from the request body ", () => {
+    const reqBody = {
+      user_onboarded: true,
+      habits_tracked: 2,
+      coins_earned: 40,
+      coins_spent: 20,
+      highest_streak: 2,
+      bought_apple: 2,
+      bought_ball: 10,
+      pet_id: 2,
+    };
+
+    return request(app)
+      .patch("/api/users/1")
+      .send(reqBody)
+      .expect(200)
+      .then((response) => {
+        const user = response.body.upDatedUser[0];
+        expect(user.user_onboarded).toBe(true);
+        expect(user.habits_tracked).toBe(2);
+        expect(user.coins_earned).toBe(40);
+        expect(user.coins_spent).toBe(20);
+        expect(user.highest_streak).toBe(2);
+        expect(user.bought_apple).toBe(2);
+        expect(user.bought_ball).toBe(10);
+        expect(user.pet_id).toBe(2);
+      });
+  });
+});
