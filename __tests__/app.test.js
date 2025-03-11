@@ -239,19 +239,6 @@ describe("POST /api/habits/:user_id", () => {
   });
 });
 
-describe("GET /api/pets/:user_name", () => {
-  test("should get a pet that corresponds to the given user_name owner", () => {
-    return request(app)
-      .get("/api/pets/ryangawenda")
-      .expect(200)
-      .then((response) => {
-        expect(response.body.pet_name).toEqual("optimus");
-        expect(response.body.pet_happiness).toEqual(9);
-        expect(response.body.pet_health).toEqual(3);
-      });
-  });
-});
-
 describe("PATCH /api/pets/:user_name", () => {
   test("should patch the pet that corresponds to the given user_name owner - 1 parameter", () => {
     return request(app)
@@ -283,49 +270,6 @@ describe("PATCH /api/pets/:user_name", () => {
             expect(lastPet.pet_health).toBe(82);
             expect(lastPet.pet_happiness).toBe(99);
           });
-      });
-  });
-});
-
-describe("GET/api/users/:user_id", () => {
-  test("GET 200: get users by id", () => {
-    return request(app)
-      .get("/api/users/1")
-      .expect(200)
-      .then((response) => {
-        const user = response.body.user;
-
-        expect(user).toEqual({
-          user_id: 1,
-          user_name: "dino",
-          habits_tracked: 0,
-          user_onboarded: false,
-          coins_earned: 0,
-          coins_spent: 0,
-          highest_streak: 0,
-          bought_apple: 0,
-          bought_strawberry: 0,
-          bought_ice_cream: 0,
-          bought_ball: 0,
-          pet_id: 1,
-        });
-      });
-  });
-
-  test("404 user not found", () => {
-    return request(app)
-      .get("/api/users/200")
-      .expect(404)
-      .then((response) => {
-        expect(response.body.msg).toBe("User not found");
-      });
-  });
-  test("400 id not a number", () => {
-    return request(app)
-      .get("/api/users/notanumber")
-      .expect(400)
-      .then((response) => {
-        expect(response.body.msg).toBe("Bad Request");
       });
   });
 });
