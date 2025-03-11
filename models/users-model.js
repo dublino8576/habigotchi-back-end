@@ -12,7 +12,7 @@ export function createUser(reqBody) {
 }
 
 export function fetchUsers() {
-  return db.query("SELECT user_name FROM users").then((res) => {
+  return db.query("SELECT * FROM users").then((res) => {
     return res.rows;
   });
 }
