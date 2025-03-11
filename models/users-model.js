@@ -27,7 +27,24 @@ export function fetchUserByUserId(user_id) {
     }
   });
 }
-
+export function deleteUser(user_id) {
+  return db
+    .query(`DELETE FROM categories WHERE user_id = $1;`, [user_id])
+    .then((response) => {
+    return db.query(`DELETE FROM habits WHERE user_id = $1;`, [user_id])
+    })
+    .then((response) => {
+      return db
+        .query(`DELETE FROM users WHERE user_id = $1 returning *;`, [user_id])
+        .then(({ rows }) => {
+          if (rows.length === 0) {
+            return Promise.reject({ msg: "User not found", status: 404 });
+          } else {
+            return rows[0];
+          }
+        });
+    });
+}
 export function updateUser(userId, updateData) {
   const {
     user_onboarded,

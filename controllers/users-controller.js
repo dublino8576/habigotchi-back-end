@@ -3,6 +3,7 @@ import {
   fetchUserByUserId,
   fetchUsers,
   updateUser,
+  deleteUser
 } from "../models/users-model.js";
 
 export function addUser(req, res, next) {
@@ -58,4 +59,22 @@ export function patchUser(req, res) {
       console.log("ER", err);
       next(err);
     });
-}
+  }
+
+
+  export function removeUser(req,res,next){
+    console.log("In Model")
+    const userId = req.params.user_id;
+
+    if (!userId) {
+      return res.status(400).send({ error: "User ID is required" });
+    }
+    deleteUser(userId)
+    .then((deletedUser) => {
+      res.status(200).send({deletedUser: deletedUser})
+    })
+    .catch((err)=>{
+      console.log("ER",err);
+      next(err)
+    })
+  }

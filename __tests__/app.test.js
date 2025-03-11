@@ -504,6 +504,33 @@ describe("PATCH /api/users/:user_id", () => {
       });
   });
 
+  describe("DELETE /api/users/:user_id", () => {
+    test("200:should delete a user from a given user_id", () => {
+      return request(app)
+        .delete("/api/users/1")
+        .expect(200)
+        .then((response) => {
+          console.log(response._body.deletedUser)
+          expect(response._body.deletedUser.user_id).toEqual(1)
+          return db
+            .query("SELECT * FROM users WHERE user_id = 1")
+            .then(({ rows }) => {
+              expect(rows.length).toBe(0);
+              return db
+                .query("SELECT * FROM categories WHERE user_id = 1")
+                .then(({ rows }) => {
+                  expect(rows.length).toBe(0);
+                  return db
+                    .query("SELECT * FROM habits WHERE user_id = 1")
+                    .then(({ rows }) => {
+                      expect(rows.length).toBe(0);
+                    });
+                });
+            });
+        });
+    });
+  });
+
   test("201:should update a user's property even if request body is only carrying one property ", () => {
     const reqBody = {
       pet_id: 2,
