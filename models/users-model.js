@@ -12,7 +12,7 @@ export function createUser(reqBody) {
 }
 
 export function fetchUsers() {
-  return db.query("SELECT * FROM users").then((res) => {
+  return db.query("SELECT user_name FROM users").then((res) => {
     return res.rows;
   });
 }
@@ -96,8 +96,6 @@ export function updateUser(userId, updateData) {
 
   SQL += propertiesToUpdate.join(", ");
   SQL += ` WHERE user_id = $${index++} RETURNING *`;
-
-  console.log(SQL);
 
   return db.query(SQL, values).then((response) => {
     return response.rows;

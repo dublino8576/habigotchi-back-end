@@ -128,15 +128,6 @@ describe("GET /api/users", () => {
         expect(usersArray.length).toBeGreaterThan(0);
         usersArray.forEach((user) => {
           expect(user).toHaveProperty("user_name");
-          expect(user).toHaveProperty("user_onboarded");
-          expect(user).toHaveProperty("habits_tracked");
-          expect(user).toHaveProperty("coins_spent");
-          expect(user).toHaveProperty("highest_streak");
-          expect(user).toHaveProperty("bought_apple");
-          expect(user).toHaveProperty("bought_ice_cream");
-          expect(user).toHaveProperty("bought_strawberry");
-          expect(user).toHaveProperty("bought_ball");
-          expect(user).toHaveProperty("pet_id");
         });
       });
   });
@@ -513,9 +504,10 @@ describe("PATCH /api/users/:user_id", () => {
       });
   });
 
-  test.only("201:should update a user's property even if request body is only carrying one property ", () => {
+  test("201:should update a user's property even if request body is only carrying one property ", () => {
     const reqBody = {
       pet_id: 2,
+      user_onboarded: true,
     };
 
     return request(app)
