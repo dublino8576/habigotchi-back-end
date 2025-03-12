@@ -27,13 +27,9 @@ export function getPet(req, res, next) {
 
 export function patchPet(req, res, next) {
   const user_name = req.params.user_name;
-  const pet_name = req.body.pet_name;
-  const pet_health = req.body.pet_health;
-  const pet_happiness = req.body.pet_happiness;
+  const reqBody = req.body;
 
-  return changePet(pet_name, pet_health, pet_happiness, user_name).then(
-    (upDatedPet) => {
-      res.status(204).send(upDatedPet.rows);
-    }
-  );
+  changePet(reqBody, user_name).then((upDatedPet) => {
+    res.status(200).send({ upDatedPet: upDatedPet });
+  });
 }

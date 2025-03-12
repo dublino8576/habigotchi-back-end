@@ -28,21 +28,46 @@ export function createPets(pet_name, pet_status) {
     });
 }
 
-export function changePet(
-  new_name = null,
-  new_health = null,
-  new_happiness = null,
-  user_name = null
-) {
-  return db.query(
-    `
-  UPDATE pets
-  SET 
-  pet_name = COALESCE($1, pet_name),
-  pet_health = COALESCE($2, pet_health),
-  pet_happiness = COALESCE($3, pet_happiness)
-  WHERE pet_id = (SELECT pet_id FROM users WHERE user_name = $4)
-  RETURNING *`,
-    [new_name, new_health, new_happiness, user_name]
-  );
+export function changePet(reqBody, user_name) {
+  const { pet_name, pet_health, pet_happiness, current_coin, pet_status } =
+    reqBody;
+
+  let propertiesToUpdate = [];
+  let index = 1;
+  const values = [];
+  let SQL = `UPDATE pets SET `;
+
+  if (pet_name) {
+    propertiesToUpdate.push(`pet_name = $${index++}`);
+    values.push(pet_name);
+  }
+
+  if (pet_health) {
+    propertiesToUpdate.push(`pet_health = $${index++}`);
+    values.push(pet_health);
+  }
+
+  if (pet_happiness) {
+    propertiesToUpdate.push(`pet_happiness = $${index++}`);
+    values.push(pet_happiness);
+  }
+
+  if (current_coin) {
+    propertiesToUpdate.push(`current_coin = $${index++}`);
+    values.push(current_coin);
+  }
+
+  if (pet_status) {
+    propertiesToUpdate.push(`pet_status = $${index++}`);
+    values.push(pet_status);
+  }
+
+  values.push(user_name);
+
+  SQL += propertiesToUpdate.join(", ");
+  SQL += ` WHERE pet_id = (SELECT pet_id FROM users WHERE user_name = $${index++}) RETURNING *`;
+
+  return db.query(SQL, values).then((result) => {
+    return result.rows[0];
+  });
 }
