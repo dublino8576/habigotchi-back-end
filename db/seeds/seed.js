@@ -52,6 +52,7 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
       habit_status VARCHAR,
       habit_added TIMESTAMP DEFAULT NOW(),
       habit_category VARCHAR NOT NULL,
+      habit_description VARCHAR,
       user_id INT REFERENCES users(user_id)
 
       );`);

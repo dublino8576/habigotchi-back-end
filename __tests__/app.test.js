@@ -183,6 +183,7 @@ describe("POST /api/habits/:user_id", () => {
       habit_frequency: "daily",
       habit_status: "pending",
       habit_category: "yoga",
+      habit_description: "MY Description",
     };
 
     return request(app)
@@ -454,8 +455,7 @@ describe("PATCH /api/users/:user_id", () => {
         .delete("/api/users/1")
         .expect(200)
         .then((response) => {
-          console.log(response._body.deletedUser)
-          expect(response._body.deletedUser.user_id).toEqual(1)
+          expect(response._body.deletedUser.user_id).toEqual(1);
           return db
             .query("SELECT * FROM users WHERE user_id = 1")
             .then(({ rows }) => {
