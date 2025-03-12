@@ -31,7 +31,7 @@ export function deleteUser(user_id) {
   return db
     .query(`DELETE FROM categories WHERE user_id = $1;`, [user_id])
     .then((response) => {
-    return db.query(`DELETE FROM habits WHERE user_id = $1;`, [user_id])
+      return db.query(`DELETE FROM habits WHERE user_id = $1;`, [user_id]);
     })
     .then((response) => {
       return db
@@ -64,7 +64,7 @@ export function updateUser(userId, updateData) {
   const values = [];
   let SQL = `UPDATE users SET `;
 
-  if (user_onboarded !== null || user_onboarded !== undefined) {
+  if (user_onboarded !== null && user_onboarded !== undefined) {
     propertiesToUpdate.push(`user_onboarded = $${index++}`);
     values.push(user_onboarded);
   }
