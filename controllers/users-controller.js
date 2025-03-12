@@ -39,7 +39,7 @@ export function getUserByUserId(req, res, next) {
     });
 }
 
-export function patchUser(req, res) {
+export function patchUser(req, res, next) {
   const userId = req.params.user_id;
   const updateData = req.body;
 
