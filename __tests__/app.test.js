@@ -240,12 +240,18 @@ describe("POST /api/habits/:user_id", () => {
   });
 });
 
-describe("PATCH /api/pets/:user_name", () => {
+describe("PATCH /api/pets/:pet_id", () => {
   test("should patch the pet that corresponds to the given user_name owner - 1 parameter", () => {
     return request(app)
       .patch("/api/pets/ryangawenda")
-      .send({ pet_name: "Bumblebee" })
-      .expect(204)
+      .send({
+        pet_name: "Bumblebee",
+        current_coin: 182,
+        pet_happiness: 400,
+        pet_health: 200,
+        pet_status: "THIS IS ME",
+      })
+      .expect(200)
       .then((response) => {
         return db
           .query("SELECT * FROM pets ORDER BY pet_id ASC LIMIT 3")
@@ -260,7 +266,7 @@ describe("PATCH /api/pets/:user_name", () => {
     return request(app)
       .patch("/api/pets/ryangawenda")
       .send({ pet_name: "Bumblebee", pet_health: 82, pet_happiness: 99 })
-      .expect(204)
+      .expect(200)
       .then((response) => {
         return db
           .query("SELECT * FROM pets ORDER BY pet_id ASC LIMIT 3")
