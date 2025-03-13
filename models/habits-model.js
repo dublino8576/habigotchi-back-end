@@ -30,7 +30,7 @@ export function createHabit(reqBody, user_id) {
 }
 
 export function fetchUserHabits(user_id) {
-  let SQL = `SELECT * from habits WHERE user_id = $1`;
+  let SQL = `SELECT * from habits WHERE user_id = $1 ORDER BY habit_status DESC`;
 
   return checkUserIdExist(user_id).then(() => {
     return db.query(SQL, [user_id]).then((response) => {
