@@ -51,6 +51,7 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
       habit_name VARCHAR NOT NULL,
       habit_frequency VARCHAR,
       habit_status VARCHAR,
+      habit_frequency_times INT DEFAULT 0,
       habit_added TIMESTAMP DEFAULT NOW(),
       habit_category VARCHAR NOT NULL,
       habit_description VARCHAR,
