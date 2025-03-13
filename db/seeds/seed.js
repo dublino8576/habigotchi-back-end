@@ -31,6 +31,7 @@ const seed = ({ category_data, habit_data, pet_data, user_data }) => {
           user_id SERIAL PRIMARY KEY,
           user_name VARCHAR NOT NULL,
           habits_tracked INT DEFAULT 0 NOT NULL,
+          total_tasks_completed INT DEFAULT 0 NOT NULL,
           user_onboarded BOOLEAN DEFAULT FALSE,
           coins_earned INT DEFAULT 0 NOT NULL,
           coins_spent INT DEFAULT 0 NOT NULL,

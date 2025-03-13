@@ -56,6 +56,7 @@ export function updateUser(userId, updateData) {
     bought_ball,
     bought_strawberry,
     bought_ice_cream,
+    total_tasks_completed,
     pet_id,
   } = updateData;
 
@@ -72,6 +73,11 @@ export function updateUser(userId, updateData) {
   if (habits_tracked) {
     propertiesToUpdate.push(`habits_tracked = $${index++}`);
     values.push(habits_tracked);
+  }
+
+  if (total_tasks_completed) {
+    propertiesToUpdate.push(`total_tasks_completed = $${index++}`);
+    values.push(total_tasks_completed);
   }
 
   if (coins_earned) {
