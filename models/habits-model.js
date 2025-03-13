@@ -50,7 +50,13 @@ export function deleteHabit(habit_id) {
 }
 
 export function editHabit(habit_id, reqBody) {
-  const { habit_name, habit_frequency, habit_status, habit_category } = reqBody;
+  const {
+    habit_name,
+    habit_frequency,
+    habit_status,
+    habit_category,
+    habit_description,
+  } = reqBody;
   let updateProperties = [];
   const args = [];
   let index = 1;
@@ -72,6 +78,11 @@ export function editHabit(habit_id, reqBody) {
   if (habit_category) {
     updateProperties.push(`habit_category = $${index++}`);
     args.push(habit_category);
+  }
+
+  if (habit_description) {
+    updateProperties.push(`habit_description = $${index++}`);
+    args.push(habit_description);
   }
 
   args.push(habit_id);

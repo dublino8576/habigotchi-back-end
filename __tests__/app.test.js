@@ -240,7 +240,7 @@ describe("POST /api/habits/:user_id", () => {
   });
 });
 
-describe("PATCH /api/pets/:pet_id", () => {
+describe("PATCH /api/pets/:user_name", () => {
   test("should patch the pet that corresponds to the given user_name owner - 1 parameter", () => {
     return request(app)
       .patch("/api/pets/ryangawenda")
@@ -365,6 +365,7 @@ describe("PATCH /api/habits/:habit_id", () => {
       habit_name: "updated_running",
       habit_frequency: "daily_updated",
       habit_status: "completed_updated",
+      habit_description: "NEW DESCRIPTION",
     };
 
     return request(app)
