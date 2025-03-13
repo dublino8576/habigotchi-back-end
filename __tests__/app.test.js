@@ -437,6 +437,7 @@ describe("PATCH /api/users/:user_id", () => {
       bought_apple: 2,
       bought_ball: 10,
       pet_id: 2,
+      total_tasks_completed: 41,
     };
 
     return request(app)
