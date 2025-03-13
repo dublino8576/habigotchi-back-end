@@ -8,6 +8,7 @@ export function createHabit(reqBody, user_id) {
     habit_status,
     habit_category,
     habit_description,
+    habit_frequency_times,
   } = reqBody;
   const args = [
     habit_name,
@@ -16,10 +17,11 @@ export function createHabit(reqBody, user_id) {
     user_id,
     habit_category,
     habit_description,
+    habit_frequency_times,
   ];
 
-  let SQL = `INSERT INTO habits (habit_name,habit_frequency,habit_status,user_id,habit_category,habit_description)
-        VALUES ($1,$2,$3,$4,$5,$6)
+  let SQL = `INSERT INTO habits (habit_name,habit_frequency,habit_status,user_id,habit_category,habit_description,habit_frequency_times)
+        VALUES ($1,$2,$3,$4,$5,$6,$7)
         RETURNING*`;
 
   return checkUserIdExist(user_id).then(() => {
@@ -56,6 +58,7 @@ export function editHabit(habit_id, reqBody) {
     habit_status,
     habit_category,
     habit_description,
+    habit_frequency_times,
   } = reqBody;
   let updateProperties = [];
   const args = [];
@@ -83,6 +86,11 @@ export function editHabit(habit_id, reqBody) {
   if (habit_description) {
     updateProperties.push(`habit_description = $${index++}`);
     args.push(habit_description);
+  }
+
+  if (habit_frequency_times) {
+    updateProperties.push(`habit_frequency_times = $${index++}`);
+    args.push(habit_frequency_times);
   }
 
   args.push(habit_id);
