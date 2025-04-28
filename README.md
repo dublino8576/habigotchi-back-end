@@ -24,7 +24,6 @@ npm install
 _(create .ENV files for dev or production and insert this)_
 ```
 DATABASE_URL=your_local_database_url_here
-PORT=3000
 ```
 
 ### 4. Set up the databases
