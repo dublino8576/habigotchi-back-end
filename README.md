@@ -2,6 +2,8 @@
 
 This is a RESTful API built with **Node.js**, **Express**, and **PostgreSQL**.
 
+Go to the endpoints.json file to see the functionality of each endpoint. You can run this API locally using your browser for GET methods or programs such as [insomnia](https://insomnia.rest/download) to test out all the other methods
+
 ## 📦 Requirements
 
 - [Node.js](https://nodejs.org/) (v16+ recommended)
